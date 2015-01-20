@@ -1,0 +1,60 @@
+<ion-view ng-controller="MainCtrl">
+
+    <div class="bar bar-header">
+  <button class="button icon ion-navicon" ng-click="openSide()"></button>
+  <h1 class="title">Idea Hat!</h1>
+</div>
+<ion-side-menus>
+  <!-- Center Content - Idea Browser -->
+  <ion-side-menu-content ng-controller="IdeasCtrl"> <!-- TODO: make it such that the search bar is in the header. That way it will always be visible! -->
+  <ion-content>
+    <div style="padding-top: 40px"></div>
+    <div class="list">
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" placeholder="Search" ng-model="search.text">
+        </label>
+        <button class="button button-small" ng-click="doSearch()">Submit</button>
+      </div>
+    </div>
+    <div class="list list-inset">
+    <div class="button button-block button-balanced" ng-click="showPost()">Post Idea</div>
+    </div>
+    <div ng-repeat="idea in ideas" class="list card">
+      <div class="item item-divider">{{idea.name}}</div>
+      <div class="item item-body">
+        <div>
+          {{idea.description}}
+        </div>
+      </div>
+   	</div>
+  </ion-content>
+  </ion-side-menu-content>
+
+  <!-- Left Menu - Account Menu -->
+  <ion-side-menu side="left" ng-controller="AccountCtrl">
+  <ion-content>
+  	<div style="padding-top: 40px"></div>
+    <div class="card">
+    	<div class="item item-divider" style="text-align: center">Account Management</div>
+      <div style="" ng-switch="ref.getAuth() === null"> <!-- If the user is logged in, display them as being logged in. If they are not logged in tell them they are logged in as guest-->
+        <div ng-switch-when="true" class="item item-text-wrap">Currently logged in as: Guest</div>
+        <div ng-switch-when="false" clas="item item-text-wrap">Currently logged in as: Someone</div> <!-- TODO: find some way to query their username and display it here-->
+      </div>
+    </div>
+    <div style="" ng-switch="ref.getAuth() === null"> <!-- If the user is logged in, display the logout button. If the user is logged out, display the login button -->
+      <div class="list list-inset">
+        <div ng-switch-when="true" ng-click="showLogin()" class="button button-block button-balanced">Login</div>
+        <div ng-switch-when="true" ng-click="showSignup()" class="button button-block button-balanced">Sign Up</div>
+        <div ng-switch-when="false" ng-click="logout()" class="button button-block button-assertive">Logout</div>
+      </div>
+    </div>
+  </ion-content>
+  </ion-side-menu>
+
+  <!-- Right menu -->
+  <!-- <ion-side-menu side="right">
+  </ion-side-menu> -->
+</ion-side-menus>
+</ion-view>

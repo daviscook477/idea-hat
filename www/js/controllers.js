@@ -1,9 +1,17 @@
 angular.module('ideas.controllers', [])
 
-.controller('MainCtrl', function($scope) {
+//The application wide controller
+.controller('RootCtrl', function($scope) {
   //TODO: logic at the application level
   $scope.ref = new Firebase("https://idea0.firebaseio.com");
 })
+
+//The controller for the main view
+.controller('MainCtrl', ['$scope', '$ionicSideMenuDelegate', function($scope, $ionicSideMenuDelegate) {
+  $scope.openSide = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+}])
 
 .controller('IdeasCtrl', ['$scope', 'Convert', '$ionicModal', '$ionicPopup', function($scope, Convert, $ionicModal, $ionicPopup) {
   $scope.ideas = []; //The list of ideas that are displayed. This will be updated by other things in the app
@@ -103,9 +111,6 @@ angular.module('ideas.controllers', [])
   }).then(function(modal) {
     $scope.loginModal = modal;
   });
-  $scope.goIdeas = function() {
-    $state.go('ideas');
-  }
   //Show the modal
   $scope.showLogin = function() {
       $scope.loginModal.show();
