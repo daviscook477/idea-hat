@@ -1,0 +1,17 @@
+<ion-modal-view>
+	<ion-header-bar>
+		<h1 class="title">Post Idea</h1>
+	</ion-header-bar>
+	<ion-content>
+		<div class="list">
+			<label class="item item-input">
+				<input type="text" placeholder="Name" ng-model="post.name">
+			</label>
+			<label class="item item-input">
+				<textarea placeholder="Description" ng-model="post.description"></textarea> <!-- For some reason the placeholder doesn't appear the first time it loads -->
+			</label>
+		</div>
+		<div class="button button-block button-balanced" ng-click="doPost()">Submit</div>
+		<div class="button button-block button-stable" ng-click="hidePost()">Cancel</div>
+	</ion-content>
+</ion-modal-view>
