@@ -17,6 +17,7 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services'])
     }
   });
 })
+//I changed something here for git
 
 //Configure the state provider
 .config(function($stateProvider, $urlRouterProvider) {
