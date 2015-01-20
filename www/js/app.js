@@ -33,21 +33,21 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services'])
     templateUrl: "templates/tabs.html"
   })*/
 
-  //Set up the state for searching and posting ideas
-  .state('ideas', {
-    url: '/ideas',
-    templateUrl: 'templates/tab-ideas.html',
-    controller: 'IdeasCtrl'
+  //Set up the state for searching and posting ideas and managing user accounts - its a side menu
+  .state('main', {
+    url: '/main',
+    templateUrl: 'templates/ideas-account-view.html',
   })
 
+/*
   //Set up the state for managing user accounts
   .state('account', {
     url: '/account',
     templateUrl: 'templates/tab-account.html',
     controller: 'AccountCtrl'
   });
-
+*/
   //This is the default state
-  $urlRouterProvider.otherwise('/account');
+  $urlRouterProvider.otherwise('/main');
 
 });

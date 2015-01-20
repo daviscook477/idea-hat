@@ -1,9 +1,17 @@
 angular.module('ideas.controllers', [])
 
-.controller('MainCtrl', function($scope) {
+//The application wide controller
+.controller('RootCtrl', function($scope) {
   //TODO: logic at the application level
   $scope.ref = new Firebase("https://idea0.firebaseio.com");
 })
+
+//The controller for the main view
+.controller('MainCtrl', ['$scope', '$ionicSideMenuDelegate', function($scope, $ionicSideMenuDelegate) {
+  $scope.openSide = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+}])
 
 .controller('IdeasCtrl', ['$scope', 'Convert', '$ionicModal', '$ionicPopup', function($scope, Convert, $ionicModal, $ionicPopup) {
   $scope.ideas = []; //The list of ideas that are displayed. This will be updated by other things in the app
@@ -25,7 +33,7 @@ angular.module('ideas.controllers', [])
   };
   //Initialize the post modal and related properties
   $scope.postModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/tab-ideas-postModal.html", {
+  $ionicModal.fromTemplateUrl("templates/postModal.html", {
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
@@ -97,15 +105,12 @@ angular.module('ideas.controllers', [])
   };
   //Initialize the login modal and associated properties
   $scope.loginModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/tab-account-loginModal.html", { //Initialize the login modal
+  $ionicModal.fromTemplateUrl("templates/loginModal.html", { //Initialize the login modal
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
     $scope.loginModal = modal;
   });
-  $scope.goIdeas = function() {
-    $state.go('ideas');
-  }
   //Show the modal
   $scope.showLogin = function() {
       $scope.loginModal.show();
@@ -138,7 +143,7 @@ angular.module('ideas.controllers', [])
   };
   //Initialize the signup modal and associated properties
   $scope.signupModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/tab-account-signupModal.html", { //Initialize the signup modal
+  $ionicModal.fromTemplateUrl("templates/signupModal.html", { //Initialize the signup modal
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
