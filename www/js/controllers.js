@@ -33,7 +33,7 @@ angular.module('ideas.controllers', [])
   };
   //Initialize the post modal and related properties
   $scope.postModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/tab-ideas-postModal.html", {
+  $ionicModal.fromTemplateUrl("templates/postModal.html", {
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
@@ -105,7 +105,7 @@ angular.module('ideas.controllers', [])
   };
   //Initialize the login modal and associated properties
   $scope.loginModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/tab-account-loginModal.html", { //Initialize the login modal
+  $ionicModal.fromTemplateUrl("templates/loginModal.html", { //Initialize the login modal
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
@@ -143,7 +143,7 @@ angular.module('ideas.controllers', [])
   };
   //Initialize the signup modal and associated properties
   $scope.signupModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/tab-account-signupModal.html", { //Initialize the signup modal
+  $ionicModal.fromTemplateUrl("templates/signupModal.html", { //Initialize the signup modal
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
