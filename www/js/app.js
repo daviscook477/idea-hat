@@ -20,23 +20,26 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services'])
 //I changed something here for git
 
 //Configure the state provider
-.config(function($stateProvider, $urlRouterProvider) {
+.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
   //Set up the states for the application
   $stateProvider
 
-  //I broke something horribly concerning the tabs and I don't know what
-  //Set up an abstract state for the tabs
-  /*  .state('tab', {
-    url: "/tab",
+  //Set up an abstract state for the main container - I don't really know what I'm doing with this
+  .state('main', {
+    url: "/main",
     abstract: true,
-    templateUrl: "templates/tabs.html"
-  })*/
+    templateUrl: "templates/main-view.html"
+  })
 
   //Set up the state for searching and posting ideas and managing user accounts - its a side menu
-  .state('main', {
-    url: '/main',
-    templateUrl: 'templates/ideas-account-view.html',
+  .state('main.ideas', {
+    url: '/ideas',
+    views: {
+      'mainContent': {
+        templateUrl: 'templates/ideas-view.html'
+      }
+    }
   })
 
 /*
@@ -48,6 +51,6 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services'])
   });
 */
   //This is the default state
-  $urlRouterProvider.otherwise('/main');
+  $urlRouterProvider.otherwise('/main/ideas');
 
-});
+}]);

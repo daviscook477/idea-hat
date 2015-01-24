@@ -1,16 +1,16 @@
 angular.module('ideas.controllers', [])
 
 //The application wide controller
-.controller('RootCtrl', function($scope) {
+.controller('RootCtrl', ['$scope', '$ionicSideMenuDelegate', function($scope, $ionicSideMenuDelegate) {
   //TODO: logic at the application level
   $scope.ref = new Firebase("https://idea0.firebaseio.com");
-})
+}])
 
-//The controller for the main view
 .controller('MainCtrl', ['$scope', '$ionicSideMenuDelegate', function($scope, $ionicSideMenuDelegate) {
-  $scope.openSide = function() {
+   $scope.toggleSide = function() {
     $ionicSideMenuDelegate.toggleLeft();
-  };
+   };
+   $scope.potato = "MOOOOOOOOOOOOOOOO";
 }])
 
 .controller('IdeasCtrl', ['$scope', 'Convert', '$ionicModal', '$ionicPopup', function($scope, Convert, $ionicModal, $ionicPopup) {
