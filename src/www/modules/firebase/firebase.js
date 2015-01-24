@@ -1,8 +1,11 @@
-angular.module('ideas.services', [])
+/*
+ * The module for the firebase service
+ */
+angular.module('ideas.firebase', [])
 
-//The service that handles logins, it provides a promise that will eventually return the authentication
+//The service that handles frebase transactions
 .factory('Firebase', ['$q', function($q) {
-  var theLoginCheckerService = {
+  var theFirebaseService = {
     //Logins a user into the firebase. Returns a promise that will give the authData
     login: function(user, ref) {
       var promise = $q.defer(); //Promises. Woot! We have to return a promise because we don't know when the firebase will finish authenticating the user.
@@ -112,5 +115,5 @@ angular.module('ideas.services', [])
       return {name: name, description: object.description.description};
     }
   };
-  return theLoginCheckerService;
+  return theFirebaseService;
 }])

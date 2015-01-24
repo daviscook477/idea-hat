@@ -1,112 +1,4 @@
-angular.module('ideas.controllers', [])
-
-//The application wide controller
-.controller('RootCtrl', ['$scope', '$ionicSideMenuDelegate', function($scope, $ionicSideMenuDelegate) {
-  //TODO: logic at the application level
-  $scope.ref = new Firebase("https://idea0.firebaseio.com");
-  $scope.currentIdea = {}; //I can't figure out where else to put this TODO: i have no idea why the hell this won't work
-}])
-
-.controller('MainCtrl', ['$scope', '$ionicSideMenuDelegate', function($scope, $ionicSideMenuDelegate) {
-   $scope.toggleSide = function() {
-    $ionicSideMenuDelegate.toggleLeft();
-   };
-   $scope.potato = "MOOOOOOOOOOOOOOOO";
-}])
-
-.controller('CommentsCtrl', ['$scope', 'Firebase', function($scope, Firebase) {
-
-}])
-
-//The controller for the ideas viewing portion
-.controller('IdeasCtrl', ['$scope', 'Firebase', '$ionicModal', '$ionicPopup', '$state', function($scope, Firebase, $ionicModal, $ionicPopup, $state) {
-  $scope.ideas = []; //An array of all the ideas
-
-  $scope.search = { //Initialize the variable to store the search text
-    text: ""
-  };
-
-  $scope.lastIdea = null;
-
-  //This method should be called for each idea that needs to be processed to the list
-  $scope.processIdea = function(snapshot) {
-    console.log("we are processing an idea now");
-      $scope.$apply(function() { //Make sure that angular gets updated with the new data
-        var objToAdd = Firebase.getIdea(snapshot);
-        $scope.ideas.push(objToAdd);
-        $scope.lastIdea = objToAdd; //Set this as the last processed idea
-      });
-  };
-  //TODO: firebase stuff
-  //something i hacked together real fast (it loads all of the ideas)
-  var numPerLoad = 2;
-  var currentLoad = 0;
-  $scope.ref.child('ideas').orderByChild('stamp').startAt(0).limitToFirst(numPerLoad).on("child_added", $scope.processIdea);
-  currentLoad += numPerLoad;
-
-  $scope.goComments = function(idea) {
-    $scope.currentIdea = idea;
-    console.log($scope.currentIdea);
-    console.log($scope.currentIdea.name);
-    $state.go('main.comments');
-  };
-
-  //Loads the next set of data
-  $scope.loadNext = function() {
-    $scope.ref.child('ideas').orderByChild('stamp').startAt(currentLoad).limitToFirst(numPerLoad).on("child_added", $scope.processIdea);
-    currentLoad += numPerLoad;
-  };
-
-  $scope.post = { //The text of the post that is posted
-    name: null,
-    description: null
-  };
-
-  //Initialize the post modal and related properties
-  $scope.postModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/postModal.html", {
-    scope: $scope,
-    animation: "slide-in-up"
-  }).then(function(modal) {
-    $scope.postModal = modal;
-  });
-
-  //Show the post modal
-  $scope.showPost = function() {
-    $scope.postModal.show();
-  };
-
-  //Hide the post modal
-  $scope.hidePost = function() {
-    $scope.postModal.hide();
-  };
-
-  //Perform the actual posting of the idea
-  $scope.doPost = function() {
-    if (!$scope.postModalIsClicked) {
-      Firebase.postIdea({name: $scope.post.name, description: $scope.post.description}, $scope.ref).then( //Post an idea to the firebase
-        function() { //On sucess
-        $ionicPopup.alert({title: 'Idea posted!'}).then( //Display a popup that tells the user that the idea was posted
-        function () { //What to do when the popup finishes
-          $scope.post.name = null; //Reset the forum inputs
-          $scope.post.description = null;
-          $scope.hidePost(); //Hide the modal
-          $scope.postModalIsClicked = false; //the thing is clickable again
-        });
-      }, function(error) {
-        $ionicPopup.alert({title: 'Idea could not be posted!'}).then( //Display a popup that tells failure
-        function() { //do stuff when it finishes popup
-          $scope.postModalIsClicked = false; //its clickable again
-        });
-      });
-      $scope.postModalIsClicked = true; //it should not be clicked because it is processing
-    }
-  };
-
-  $scope.doSearch = function() {
-    //TODO: search for things
-  };
-}])
+angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
 
 //The controller for the account side menu
 .controller('AccountCtrl', ['$scope', '$state', '$ionicPopup', '$ionicModal', 'Firebase', function($scope, $state, $ionicPopup, $ionicModal, Firebase) {
@@ -121,7 +13,7 @@ angular.module('ideas.controllers', [])
 
   //Initialize the login modal and associated properties
   $scope.loginModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/loginModal.html", { //Initialize the login modal
+  $ionicModal.fromTemplateUrl("modules/account/loginModal.html", { //Initialize the login modal
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
@@ -164,7 +56,7 @@ angular.module('ideas.controllers', [])
 
   //Initialize the signup modal and associated properties
   $scope.signupModalIsClicked = false;
-  $ionicModal.fromTemplateUrl("templates/signupModal.html", { //Initialize the signup modal
+  $ionicModal.fromTemplateUrl("modules/account/signupModal.html", { //Initialize the signup modal
     scope: $scope,
     animation: "slide-in-up"
   }).then(function(modal) {
