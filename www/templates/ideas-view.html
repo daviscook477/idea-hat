@@ -1,0 +1,30 @@
+<ion-view title="Ideas" ng-controller="IdeasCtrl">
+  <ion-nav-buttons side="primary">
+    <button class="button button-icon button-clear ion-navicon" ng-click="toggleSide()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list">
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" placeholder="Search" ng-model="search.text">
+        </label>
+        <button class="button button-small" ng-click="doSearch()">Submit</button>
+      </div>
+    </div>
+    <div class="list list-inset">
+      <div class="button button-block button-balanced" ng-click="showPost()">Post idea</div>
+    </div>
+    <div ng-repeat="idea in ideas" ng-click="goComments(idea)" class="list card">
+      <div class="item item-divider">{{idea.name}}</div>
+      <div class="item item-body">
+        <div>
+          {{idea.description}}
+        </div>
+      </div>
+    </div>
+    <div class="list list-inset">
+      <div class="button button-block button-balanced" ng-click="loadNext()">Load more ideas!</div>
+    </div>
+  </ion-content>
+</ion-view>
