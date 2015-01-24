@@ -1,5 +1,4 @@
 var injector;
-var mockQ;
 var ref;
 var mockOwner;
 var firebaseModule;
@@ -8,7 +7,6 @@ var firebaseModule;
 module("Firebase Module", {
 	beforeEach: function() {
 		injector = angular.injector(['ng', 'ideas.firebase']);
-		mockQ = injector.get('$q'); //Obtain a $q
 		ref = new Firebase("https://idea0.firebaseio.com/"); //Obtain a reference to the firebase
 		mockOwner = "Davis Cook"; //Set up the mock owner
 		firebaseModule = injector.get('Firebase'); //Obtain the service
