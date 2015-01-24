@@ -5,6 +5,8 @@ angular.module('ideas.firebase', [])
 
 //The service that handles frebase transactions
 .factory('Firebase', ['$q', function($q) {
+  var anonymousPostName = "anonymous";
+
   var theFirebaseService = {
     //Logins a user into the firebase. Returns a promise that will give the authData
     login: function(user, ref) {
@@ -32,24 +34,39 @@ angular.module('ideas.firebase', [])
       return promise.promise;
     },
 
+    /*
+     * Turns an idea in the format of {name: , description: } into the correct format for sending to the firebase
+     */
+    intoFirebaseVersion: function(idea, ref, owner) {
+      var firebaseIdea = {
+        data: {
+          name: idea['name'],
+          description: idea['description'],
+          owner: owner
+        },
+        stamp: Firebase.ServerValue.TIMESTAMP //Allow the server to generate a timestamp for the object
+      }
+      return firebaseIdea;
+    },
+
+    /*
+     * Determines the owner of a firebase
+     */
+    getOwner: function(ref) {
+      var auth = ref.getAuth();
+      var owner; //The owner of the idea
+      if (auth === null) {
+        owner = anonymousPostName; //The idea is posted anonymous
+      } else {
+        owner = auth.uid; //Set the owner to be the current person logged into the firebase
+      }
+      return owner;
+    },
+
     //Posts an idea to the firebase
     postIdea: function(idea, ref) {
       var promise = $q.defer();
-      var auth = ref.getAuth();
-      var owner; //Set the owner of this comment
-      if (auth == null) {
-        owner = "anonymous";
-      } else {
-        owner = auth.uid;
-      }
-      var toPost = { //Create the idea to post
-        data: {
-          name: idea.name,
-          description: idea.description,
-          owner: owner
-        },
-        stamp: -Firebase.ServerValue.TIMESTAMP //Allow the server to generate a timestamp for the object
-      };
+      var toPost = this.intoFirebaseVersion(idea, ref);
       ref.child("ideas").push(toPost, function(error) {
         if (error === null)
         {

@@ -7,23 +7,24 @@
 	<link rel="stylesheet" href="node_modules/qunitjs/qunit/qunit.css" type="text/css" media="screen">
 	<!-- Link to the javascript libraries that the source depends on -->
 		<!-- Ionic + AngularJS -->
-    	<script src="lib/ionic/js/ionic.bundle.js"></script>
+    	<script src="src/www/lib/ionic/js/ionic.bundle.js"></script>
     	<!-- Firebase! -->
 		<script src="https://cdn.firebase.com/js/client/2.1.1/firebase.js"></script>
 
 	<!-- Link to the QUnit javascript -->
-	<script type="text/javascript" src="node_modules/qunitjs/qunit/qunit.js"></script>
+	<script src="node_modules/qunitjs/qunit/qunit.js"></script>
 	<!-- Links to the things being tested -->
 		<!-- The module for the application -->
-        <script src="app.js"></script>
+        <script src="src/www/app.js"></script>
         <!-- The modules that are dependencies of the application -->
-        <script src="modules/main/main.js"></script>
-        <script src="modules/account/account.js"></script>
-        <script src="modules/comments/comments.js"></script>
-        <script src="modules/ideas/ideas.js"></script>
-        <script src="modules/firebase/firebase.js"></script> <!-- This module is just a service -->
+        <script src="src/www/modules/main/main.js"></script>
+        <script src="src/www/modules/account/account.js"></script>
+        <script src="src/www/modules/comments/comments.js"></script>
+        <script src="src/www/modules/ideas/ideas.js"></script>
+        <script src="src/www/modules/firebase/firebase.js"></script> <!-- This module is just a service -->
 	<!-- Links to the tests -->
-	<scipt type="text/javascript" src="test/test.js"></scipt>
+	<script src="test/test.js"></script>
+	<script src="test/lib.js"></script>
 </head>
 <body>
 	<!-- QUnit HTML structure -->
