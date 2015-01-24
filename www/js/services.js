@@ -1,7 +1,7 @@
 angular.module('ideas.services', [])
 
 //The service that handles logins, it provides a promise that will eventually return the authentication
-.factory('Login', ['$q', function($q) {
+.factory('Firebase', ['$q', function($q) {
   var theLoginCheckerService = {
     //Logins a user into the firebase. Returns a promise that will give the authData
     login: function(user, ref) {
@@ -27,38 +27,56 @@ angular.module('ideas.services', [])
         }
       });
       return promise.promise;
-    }
-  };
-  return theLoginCheckerService;
-}])
-
-//The structure things are stored in the firebase is as follows:
-/*
-ideas {
-  ideaID: { //ideaID is just the id of the posted idea
-    random: { //Each attribute that isn't description is simply one of their search terms
-      id: 0
-    }
-    idea: {
-      id: 1
     },
-    description: {
-      id: null,
-      description: "This is a random idea."
-    }
-  },
 
-  ideaID: {
-    ...
-  }
-}
+    //Posts an idea to the firebase
+    postIdea: function(idea, ref) {
+      var promise = $q.defer();
+      var auth = ref.getAuth();
+      var owner; //Set the owner of this comment
+      if (auth == null) {
+        owner = "anonymous";
+      } else {
+        owner = auth.uid;
+      }
+      var toPost = { //Create the idea to post
+        data: {
+          name: idea.name,
+          description: idea.description,
+          owner: owner
+        },
+        stamp: -Firebase.ServerValue.TIMESTAMP //Allow the server to generate a timestamp for the object
+      };
+      ref.child("ideas").push(toPost, function(error) {
+        if (error === null)
+        {
+          promise.resolve(); //Resolves the promise
+        } else {
+          promise.reject(error);
+        }
+      }); //Actually do the post
+      return promise.promise;
+    },
 
+    //Gets an idea from the firebase
+    getIdea: function(snapshot) {
+      var obj = snapshot.val();
+      var toReturn = {
+        name: obj.data.name,
+        description: obj.data.description,
+        owner: obj.data.owner,
+        stamp: obj.stamp,
+        comments: []
+      };
+      if ('comments' in obj)
+      {
+        for (prop in obj.comments) {
+          toReturn.comments.push(obj.comments[prop]);
+        }
+      }
+      return toReturn;
+    },
 
-*/
-
-//The service that converts my formats for storing data
-.factory('Convert', function() {
-  var theConverterService = {
     toFirebase: function(object) { //this converts an object in the form {name: "NAME", description: "DESCRIPTION"} into the format used by the firebase
       var toReturn = new Object();
       var nameTags = object.name.split(" "); //Tokenize the name into its parts
@@ -94,5 +112,5 @@ ideas {
       return {name: name, description: object.description.description};
     }
   };
-  return theConverterService;
-});
+  return theLoginCheckerService;
+}])

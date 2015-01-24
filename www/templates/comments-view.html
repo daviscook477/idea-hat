@@ -1,0 +1,22 @@
+<ion-view title="Comments" ng-controller="RootCtrl">
+	<ion-nav-buttons side="primary">
+    	<button class="button button-icon button-clear ion-navicon" ng-click="toggleSide()"></button>
+  	</ion-nav-buttons>
+  	<ion-content>
+  	<div class="list card">
+      <div class="item item-divider">{{currentIdea.name}}</div>
+      <div class="item item-body">
+        <div>
+          {{currentIdea.description}}
+        </div>
+      </div>
+    </div>
+  	<div ng-repeat="comment in currentIdea.comments" class="list card">
+      <div class="item item-body">
+        <div>
+          {{comment.text}}
+        </div>
+      </div>
+    </div>
+   	</ion-content>
+</ion-view>

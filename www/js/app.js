@@ -42,6 +42,16 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services'])
     }
   })
 
+  .state('main.comments', {
+    url: '/comments',
+    views: {
+      'mainContent': {
+        templateUrl: 'templates/comments-view.html'
+      }
+
+    }
+  });
+
 /*
   //Set up the state for managing user accounts
   .state('account', {
