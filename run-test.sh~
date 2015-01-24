@@ -1,3 +1,0 @@
-#!/bin/bash
-java -jar auto-detect-scripts/test.jar
-read -n 1 -s
