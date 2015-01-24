@@ -15,6 +15,7 @@ angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
   $scope.loginModalIsClicked = false;
   $ionicModal.fromTemplateUrl("modules/account/loginModal.html", { //Initialize the login modal
     scope: $scope,
+    focusFirstInput: true,
     animation: "slide-in-up"
   }).then(function(modal) {
     $scope.loginModal = modal;
@@ -58,6 +59,7 @@ angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
   $scope.signupModalIsClicked = false;
   $ionicModal.fromTemplateUrl("modules/account/signupModal.html", { //Initialize the signup modal
     scope: $scope,
+    focusFirstInput: true,
     animation: "slide-in-up"
   }).then(function(modal) {
     $scope.signupModal = modal;

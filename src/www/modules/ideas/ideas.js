@@ -12,15 +12,12 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
     text: ""
   };
 
-  $scope.lastIdea = null;
-
   //This method should be called for each idea that needs to be processed to the list
   $scope.processIdea = function(snapshot) {
     console.log("we are processing an idea now");
       $scope.$apply(function() { //Make sure that angular gets updated with the new data
         var objToAdd = Firebase.getIdea(snapshot);
         $scope.ideas.push(objToAdd);
-        $scope.lastIdea = objToAdd; //Set this as the last processed idea
       });
   };
   //TODO: firebase stuff
@@ -52,6 +49,7 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   $scope.postModalIsClicked = false;
   $ionicModal.fromTemplateUrl("modules/ideas/postModal.html", {
     scope: $scope,
+    focusFirstInput: true,
     animation: "slide-in-up"
   }).then(function(modal) {
     $scope.postModal = modal;

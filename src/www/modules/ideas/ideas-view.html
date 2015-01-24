@@ -16,10 +16,10 @@
       <div class="button button-block button-balanced" ng-click="showPost()">Post idea</div>
     </div>
     <div ng-repeat="idea in ideas" ng-click="goComments(idea)" class="list card">
-      <div class="item item-divider">{{idea.name}}</div>
+      <div class="item item-divider">{{idea.idea.name}}</div>
       <div class="item item-body">
         <div>
-          {{idea.description}}
+          {{idea.idea.description}}
         </div>
       </div>
     </div>
