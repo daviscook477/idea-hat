@@ -5,7 +5,7 @@
 angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
 
 //This controller handles the ideas view
-.controller('IdeasCtrl', ['$scope', 'Firebase', '$ionicModal', '$ionicPopup', '$state', function($scope, Firebase, $ionicModal, $ionicPopup, $state) {
+.controller('IdeasCtrl', ['$scope', 'Firebase', '$ionicModal', '$ionicPopup', '$state', '$timeout', function($scope, Firebase, $ionicModal, $ionicPopup, $state, $timeout) {
   $scope.ideas = []; //An array of all the ideas
 
   $scope.search = { //Initialize the variable to store the search text
@@ -14,11 +14,11 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
 
   //This method should be called for each idea that needs to be processed to the list
   $scope.processIdea = function(snapshot) {
-    console.log("we are processing an idea now");
-      $scope.$apply(function() { //Make sure that angular gets updated with the new data
-        var objToAdd = Firebase.intoIdeaVersion(snapshot);
-        $scope.ideas.push(objToAdd);
-      });
+    $timeout(function() { //Force angularjs to get updated with the data
+      console.log("we are processing an idea now");
+      var objToAdd = Firebase.intoIdeaVersion(snapshot);
+      $scope.ideas.push(objToAdd);
+    });
   };
   //TODO: firebase stuff
   //something i hacked together real fast (it loads all of the ideas)

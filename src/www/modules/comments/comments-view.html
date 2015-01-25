@@ -3,7 +3,8 @@
     	<button class="button button-icon button-clear ion-navicon" ng-click="toggleSide()"></button>
   	</ion-nav-buttons>
   	<ion-content ng-switch="state">
-      <div class="" ng-switch-where="ready">
+      <div class="list card" ng-switch-when="load">Loading!</div>
+      <div class="" ng-switch-when="ready">
       	<div class="list card">
           <div class="item item-divider">{{idea.idea.name}}</div>
           <div class="item item-body">
