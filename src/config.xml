@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.ideahat170599" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>idea-hat</name>
+  <name>Idea Hat!</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Browse, post, and search for ideas!
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="daviscook477@gmail.com" href="">
+      Davis Cook
     </author>
   <content src="index.html"/>
   <access origin="*"/>
