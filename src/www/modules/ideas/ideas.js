@@ -16,7 +16,7 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   $scope.processIdea = function(snapshot) {
     console.log("we are processing an idea now");
       $scope.$apply(function() { //Make sure that angular gets updated with the new data
-        var objToAdd = Firebase.getIdea(snapshot);
+        var objToAdd = Firebase.intoIdeaVersion(snapshot);
         $scope.ideas.push(objToAdd);
       });
   };

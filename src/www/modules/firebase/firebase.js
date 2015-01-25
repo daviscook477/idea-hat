@@ -34,6 +34,28 @@ angular.module('ideas.firebase', [])
       return promise.promise;
     },
 
+    //Gets an idea from the firebase
+    intoIdeaVersion: function(snapshot) {
+      var obj = snapshot.val();
+      var toReturn = {
+        idea: {
+          name: obj.data.name,
+          description: obj.data.description,
+          owner: obj.data.owner,
+          stamp: obj.stamp,
+          comments: []
+        },
+        name: snapshot.key() //The name of the key that goes to this idea
+      };
+      if ('comments' in obj)
+      {
+        for (prop in obj.comments) {
+          toReturn.comments.push(obj.comments[prop]);
+        }
+      }
+      return toReturn;
+    },
+
     /*
      * Turns an idea in the format of {name: , description: } into the correct format for sending to the firebase
      */
@@ -76,28 +98,6 @@ angular.module('ideas.firebase', [])
         }
       }); //Actually do the post
       return promise.promise;
-    },
-
-    //Gets an idea from the firebase
-    getIdea: function(snapshot) {
-      var obj = snapshot.val();
-      var toReturn = {
-        idea: {
-          name: obj.data.name,
-          description: obj.data.description,
-          owner: obj.data.owner,
-          stamp: obj.stamp,
-          comments: []
-        },
-        name: snapshot.key() //The name of the key that goes to this idea
-      };
-      if ('comments' in obj)
-      {
-        for (prop in obj.comments) {
-          toReturn.comments.push(obj.comments[prop]);
-        }
-      }
-      return toReturn;
     }
   };
   return theFirebaseService;
