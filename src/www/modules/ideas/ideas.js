@@ -28,10 +28,7 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   currentLoad += numPerLoad;
 
   $scope.goComments = function(idea) {
-    $scope.currentIdea = idea;
-    console.log($scope.currentIdea);
-    console.log($scope.currentIdea.name);
-    $state.go('main.comments');
+    $state.go('main.comments', {ideaId: idea.name});
   };
 
   //Loads the next set of data

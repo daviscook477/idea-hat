@@ -66,7 +66,7 @@ angular.module('ideas.firebase', [])
     //Posts an idea to the firebase
     postIdea: function(idea, ref) {
       var promise = $q.defer();
-      var post = this.intoFirebaseVersion(idea, ref, getOwner(ref));
+      var post = this.intoFirebaseVersion(idea, ref, this.getOwner(ref));
       ref.child("ideas").push(post, function(error) {
         if (error === null)
         {
@@ -89,7 +89,7 @@ angular.module('ideas.firebase', [])
           stamp: obj.stamp,
           comments: []
         },
-        name: snapshot.name() //The name of the key that goes to this idea
+        name: snapshot.key() //The name of the key that goes to this idea
       };
       if ('comments' in obj)
       {

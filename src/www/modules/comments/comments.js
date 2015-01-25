@@ -5,6 +5,7 @@
 angular.module('ideas.comments', [])
 
 //The controller that handles the comments view
-.controller('CommentsCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
-	$scope.comment = $routeParams.ideaId; //Figure out which idea we are looking at
+.controller('CommentsCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {
+	$scope.comment = $stateParams.ideaId; //Figure out which idea we are looking at
+	console.log($scope.comment);
 }])
