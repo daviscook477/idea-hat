@@ -35,7 +35,7 @@ angular.module('ideas.firebase', [])
     },
 
     //Gets an idea from the firebase
-    intoIdeaVersion: function(snapshot) {
+    ideaIntoIdeaVersion: function(snapshot) {
       var obj = snapshot.val();
       var toReturn = {
         idea: {
@@ -43,14 +43,14 @@ angular.module('ideas.firebase', [])
           description: obj.data.description,
           owner: obj.data.owner,
           stamp: obj.stamp,
-          comments: []
+          comments: {}
         },
         name: snapshot.key() //The name of the key that goes to this idea
       };
       if ('comments' in obj)
       {
         for (prop in obj.comments) {
-          toReturn.comments.push(obj.comments[prop]);
+          toReturn.comments[prop] = obj.comments[prop];
         }
       }
       return toReturn;
@@ -59,7 +59,7 @@ angular.module('ideas.firebase', [])
     /*
      * Turns an idea in the format of {name: , description: } into the correct format for sending to the firebase
      */
-    intoFirebaseVersion: function(idea, ref, owner) {
+    ideaIntoFirebaseVersion: function(idea, owner) {
       var firebaseIdea = {
         data: {
           name: idea['name'],
@@ -88,7 +88,7 @@ angular.module('ideas.firebase', [])
     //Posts an idea to the firebase
     postIdea: function(idea, ref) {
       var promise = $q.defer();
-      var post = this.intoFirebaseVersion(idea, ref, this.getOwner(ref));
+      var post = this.ideaIntoFirebaseVersion(idea, ref, this.getOwner(ref));
       ref.child("ideas").push(post, function(error) {
         if (error === null)
         {
@@ -97,6 +97,40 @@ angular.module('ideas.firebase', [])
           promise.reject(error);
         }
       }); //Actually do the post
+      return promise.promise;
+    },
+
+    commentIntoIdeaVersion: function(snapshot) {
+      var obj = snapshot.val();
+      return {
+        comment: {
+          text: obj.data.text,
+          owner: obj.data.owner
+        },
+        name: snapshot.key()
+      }
+    },
+
+    commentIntoFirebaseVersion: function(comment, owner) {
+      return {
+        data: {
+          text: comment.text,
+          owner: owner
+        },
+        stamp: Firebase.ServerValue.TIMESTAMP
+      }
+    },
+
+    //Posts a comment
+    postComment: function(idea, comment, ref) {
+      var promise = $q.defer();
+      ref.child("ideas").child(idea.name).child("data").child("comments").push(this.commentIntoFirebaseVersion(comment, this.getOwner(ref)), function(error) {
+        if (error === null) {
+          promise.resolve();
+        } else {
+          promise.reject(error);
+        }
+      });
       return promise.promise;
     }
   };

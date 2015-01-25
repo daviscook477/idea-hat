@@ -13,13 +13,27 @@
             </div>
           </div>
         </div>
-      	<div ng-repeat="comment in idea.comments" class="list card">
+      	<div ng-repeat="c in comments" class="list card">
           <div class="item item-body">
             <div>
-              {{comment.text}}
+              {{c.comment.text}}
             </div>
           </div>
         </div>
+        <div class="list card">
+          <div class="item item-divider">
+            <div>
+              Post a comment!
+            </div>
+          </div>
+          <div class="item item-body">
+            <textarea placeholder="Comment" ng-model="comment.text"></textarea>
+          </div>
+        </div>
+        <div class="list list-inset">
+          <div class="button button-block button-balanced" ng-click="doPost()">Submit</div>
+        </div>
       </div>
+      <div class="list card" ng-switch-when="invalid">Invalid URL!</div>
    	</ion-content>
 </ion-view>

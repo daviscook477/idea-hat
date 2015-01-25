@@ -16,25 +16,16 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   $scope.processIdea = function(snapshot) {
     $timeout(function() { //Force angularjs to get updated with the data
       console.log("we are processing an idea now");
-      var objToAdd = Firebase.intoIdeaVersion(snapshot);
+      var objToAdd = Firebase.ideaIntoIdeaVersion(snapshot);
       $scope.ideas.push(objToAdd);
     });
   };
-  //TODO: firebase stuff
-  //something i hacked together real fast (it loads all of the ideas)
-  var numPerLoad = 2;
-  var currentLoad = 0;
-  $scope.ref.child('ideas').orderByChild('stamp').startAt(0).limitToFirst(numPerLoad).on("child_added", $scope.processIdea);
-  currentLoad += numPerLoad;
+
+  //This literally  just loads every idea in the firebase (TODO: something smarter)
+  $scope.ref.child('ideas').orderByChild('stamp').on("child_added", $scope.processIdea);
 
   $scope.goComments = function(idea) {
     $state.go('main.comments', {ideaId: idea.name});
-  };
-
-  //Loads the next set of data
-  $scope.loadNext = function() {
-    $scope.ref.child('ideas').orderByChild('stamp').startAt(currentLoad).limitToFirst(numPerLoad).on("child_added", $scope.processIdea);
-    currentLoad += numPerLoad;
   };
 
   $scope.post = { //The text of the post that is posted
