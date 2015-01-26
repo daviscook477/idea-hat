@@ -12,14 +12,13 @@ angular.module('ideas.comments', ['ideas.firebase'])
 	};
 	$scope.state  = "load"; //The states of this page: "load" means that the things are loading from the firebase, "ready" means we are ready to display to the user, "invalid" means the data could not be obtained
 	var doError = function() {
-		console.log("Something went wrong!"); //Something went wrong with the operation
+		console.log("Something went wrong! Most likely invalid URL!"); //Something went wrong with the operation
 		$scope.state = "invalid"; //This url does not lead to a valid idea
 	}
 	var cbSuccess = function(snapshot) {
 		$timeout(function() { //Make sure that the page is updated with these changes to it
 			if (snapshot.val() !== null) {
 				$scope.idea = Firebase.ideaIntoIdeaVersion(snapshot); //Convert the snapshot to the idea format
-				console.log($scope.idea.idea.name);
 				$scope.state = "ready"; //We are ready to display to the user
 			} else {
 				doError();
@@ -41,5 +40,8 @@ angular.module('ideas.comments', ['ideas.firebase'])
 
 	$scope.doPost = function() {
 		Firebase.postComment($scope.idea, $scope.comment, $scope.ref);
+		$scope.comment = { //Reset the comment field after it has been posted
+			text: null
+		};
 	};
 }]);

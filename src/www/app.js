@@ -3,7 +3,7 @@
  * The things within the [] are the requirements
  *   The module requires the 
  */
-angular.module('ideas', ['ionic', 'ideas.main', 'ideas.account', 'ideas.ideas', 'ideas.comments'])
+angular.module('ideas', ['ionic', 'ideas.main', 'ideas.account', 'ideas.ideas', 'ideas.comments', 'ideas.directives'])
 
 //I don't know what this does-it was in the template
 .run(function($ionicPlatform) {

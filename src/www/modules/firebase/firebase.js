@@ -8,6 +8,19 @@ angular.module('ideas.firebase', [])
   var anonymousPostName = "anonymous"; //The owner given to anonymous posts
 
   var theFirebaseService = {
+    //Quick solution to issues with syncing the current auth
+    callbacks: [],
+
+    registerCallback: function(callback) {
+      theFirebaseService.callbacks.push(callback);
+    },
+
+    notify: function(ref) {
+      angular.forEach(theFirebaseService.callbacks, function(callback) {
+        callback(ref.getAuth());
+      })
+    },
+
     //Logins a user into the firebase. Returns a promise that will give the authData
     login: function(user, ref) {
       var promise = $q.defer(); //Promises. Woot! We have to return a promise because we don't know when the firebase will finish authenticating the user.
@@ -16,9 +29,15 @@ angular.module('ideas.firebase', [])
           promise.reject(error);
         } else { //They logged in sucessfully
           promise.resolve(authData);
+          theFirebaseService.notify(ref); //Auth could have changed!
         }
       });
       return promise.promise;
+    },
+
+    logout: function(ref) {
+      ref.unauth();
+      theFirebaseService.notify(ref); //Auth could have changed!
     },
 
     //Signs a user into the firebase. Returns a promise that tells when it completes and if it was sucessful or not
@@ -88,7 +107,7 @@ angular.module('ideas.firebase', [])
     //Posts an idea to the firebase
     postIdea: function(idea, ref) {
       var promise = $q.defer();
-      var post = this.ideaIntoFirebaseVersion(idea, ref, this.getOwner(ref));
+      var post = theFirebaseService.ideaIntoFirebaseVersion(idea, theFirebaseService.getOwner(ref));
       ref.child("ideas").push(post, function(error) {
         if (error === null)
         {

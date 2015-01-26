@@ -3,7 +3,7 @@
     <button class="button button-icon button-clear ion-navicon" ng-click="toggleSide()"></button>
   </ion-nav-buttons>
   <ion-content>
-    <div class="list">
+    <!-- Uncomment for Search Bar: <div class="list">
       <div class="item item-input-inset">
         <label class="item-input-wrapper">
           <i class="icon ion-search placeholder-icon"></i>
@@ -11,12 +11,12 @@
         </label>
         <button class="button button-small" ng-click="doSearch()">Submit</button>
       </div>
-    </div>
+    </div> -->
     <div class="list list-inset">
       <div class="button button-block button-balanced" ng-click="showPost()">Post idea</div>
     </div>
     <div ng-repeat="idea in ideas" ng-click="goComments(idea)" class="list card">
-      <div class="item item-divider">{{idea.idea.name}}</div>
+      <div class="item item-divider">{{idea.idea.name}}<edit-delete owner="{{idea.idea.owner}}"/></div>
       <div class="item item-body">
         <div>
           {{idea.idea.description}}

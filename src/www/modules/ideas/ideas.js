@@ -15,7 +15,6 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   //This method should be called for each idea that needs to be processed to the list
   $scope.processIdea = function(snapshot) {
     $timeout(function() { //Force angularjs to get updated with the data
-      console.log("we are processing an idea now");
       var objToAdd = Firebase.ideaIntoIdeaVersion(snapshot);
       $scope.ideas.push(objToAdd);
     });

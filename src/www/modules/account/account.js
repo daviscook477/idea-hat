@@ -1,7 +1,7 @@
 angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
 
 //The controller for the account side menu
-.controller('AccountCtrl', ['$scope', '$state', '$ionicPopup', '$ionicModal', 'Firebase', function($scope, $state, $ionicPopup, $ionicModal, Firebase) {
+.controller('AccountCtrl', ['$scope', '$state', '$ionicPopup', '$ionicModal', 'Firebase', '$timeout', function($scope, $state, $ionicPopup, $ionicModal, Firebase, $timeout) {
   $scope.loginText = { //The login data that is altered by the text input fields
     email: null,
     password: null
@@ -43,6 +43,9 @@ angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
           $scope.loginText.email = null; //rest the fields
           $scope.loginText.password = null;
           $scope.loginModalIsClicked = false; //the button is no longer clicked
+          $timeout(function() {
+            $scope.auth = authData;
+          });
         });
       }, function(error) { //The function for failure
         $ionicPopup.alert({title: 'Login failed!'}).then( //Popup that it failed
@@ -89,6 +92,9 @@ angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
             $scope.signupText.email = null; //Reset the email and password signup fields
             $scope.signupText.password = null;
             $scope.signupModalIsClicked = false;
+            $timeout(function() {
+              $scope.auth = authData;
+            });
           });
         }, function(err) { //They were not logged in but they did sign up
           $ionicPopup.alert({title: 'Sign up succeeded but login failed!'}).then( //Display a popup to tell them that it failed at login
@@ -115,7 +121,7 @@ angular.module('ideas.account', ['ideas.firebase', 'ideas.firebase', 'ionic'])
       title: 'Are you sure you want to logout?'
     }).then(function(resolution) {
       if (resolution) { //If they confirmed
-        $scope.ref.unauth(); //Logout by firebase
+        Firebase.logout($scope.ref);
       } else {
         //Do nothing because they don't want to logout
       }
