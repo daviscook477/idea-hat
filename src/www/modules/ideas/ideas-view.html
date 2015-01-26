@@ -16,7 +16,10 @@
       <div class="button button-block button-balanced" ng-click="showPost()">Post idea</div>
     </div>
     <div ng-repeat="idea in ideas" ng-click="goComments(idea)" class="list card">
-      <div class="item item-divider">{{idea.idea.name}}<edit-delete owner="{{idea.idea.owner}}"/></div>
+      <div class="item item-divider">
+        <div class="" style="float: left">{{idea.idea.name}} - {{idea.idea.owner}}</div> <!-- TODO: show usernames instead of login tokens -->
+        <edit-delete owner="{{idea.idea.owner}}"/>
+      </div>
       <div class="item item-body">
         <div>
           {{idea.idea.description}}
