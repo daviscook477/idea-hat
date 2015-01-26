@@ -13,9 +13,9 @@ function valueOf(string, scope) {
 
 angular.module('ideas.directives', ['ideas.firebase'])
 
-.directive('editDelete', ['Firebase', function(Firebase) {
+.directive('sameOwner', ['Firebase', function(Firebase) {
 	var link = function(scope, element, attrs) {
-		var model;
+		var owner;
 		var auth;
 		if (scope.ref.getAuth() !== null) { //This here doesn't work with the way that firebase loads cookies (or something) to keep sessions alive
 			auth = scope.ref.getAuth().uid;
@@ -33,25 +33,23 @@ angular.module('ideas.directives', ['ideas.firebase'])
 		};
 		var updateData = function() {
 			if (auth !== null) {
-				if (auth == model) {
-					scope.displayEditDelete = true;
+				if (auth == owner) {
+					scope.sameOwner = true;
 				} else {
-					scope.displayEditDelete = false;
+					scope.sameOwner = false;
 				}
 			} else {
-				scope.displayEditDelete = false;
+				scope.sameOwner = false;
 			}
-			console.log("model: " + model + " auth: " + auth);
 		}
 		attrs.$observe('owner', function(value) {
-			model = value;
+			owner = value;
 			updateData();
 		})
 		Firebase.registerCallback(updated); //Now we listen for changes in the auth
-		scope.displayEditDelete = false;
+		scope.sameOwner = false;
 	}
 	return {
-		templateUrl: "modules/directives/edit-delete.html",
 		link: link,
 		scope: false
 	}
