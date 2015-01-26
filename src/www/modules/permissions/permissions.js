@@ -58,13 +58,11 @@ angular.module('ideas.permissions', ['ideas.firebase'])
 			console.log("will show popover");
 			link.popover.show($event);
 		};
-		scope.getPermissions = function() {
-			if (scope.sameOwner) {
-				return ['Edit', 'Delete'];
-			} else {
-				return [];
-			}
-		}
+		scope.permissions = [{name: 'Edit', do: function() {
+					console.log("edit");
+				}}, {name: 'Delete', do: function() {
+					console.log("delete");
+				}}];
 		scope.$on('destroy', function() {
 			scope.popover.remove();
 		})
