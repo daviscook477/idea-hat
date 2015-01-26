@@ -69,9 +69,6 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   }
 
   $scope.options = [ //These get passed to the permissions directive
-    {name: 'Edit', do: function(popover, obj) {
-      //TODO: edit modal
-    }},
     {name: 'Delete', do: function(popover, obj) {
       //Show a confirm popup in the case people accidentally hit delete
       $ionicPopup.confirm({
