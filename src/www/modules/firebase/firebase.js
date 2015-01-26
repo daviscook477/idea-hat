@@ -16,9 +16,9 @@ angular.module('ideas.firebase', [])
     },
 
     notify: function(ref) {
-      angular.forEach(theFirebaseService.callbacks, function(callback) {
-        callback(ref.getAuth());
-      })
+      for (var i = 0; i < theFirebaseService.callbacks.length; i++) {
+        theFirebaseService.callbacks[i](ref.getAuth());
+      }
     },
 
     //Logins a user into the firebase. Returns a promise that will give the authData

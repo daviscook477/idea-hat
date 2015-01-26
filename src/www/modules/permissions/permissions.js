@@ -40,6 +40,7 @@ angular.module('ideas.permissions', ['ideas.firebase'])
 			}
 			updateData();
 		};
+		Firebase.registerCallback(updated);
 		var updateData = function() {
 			if (auth !== null) {
 				if (auth == owner) {

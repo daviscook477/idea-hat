@@ -82,7 +82,6 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
       }).then(function() {
         popover.hide();
       });
-      console.log("delete")
     }}
   ];
 
