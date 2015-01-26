@@ -11,9 +11,9 @@ function valueOf(string, scope) {
 	return curObj;
 }
 
-angular.module('ideas.directives', ['ideas.firebase'])
+angular.module('ideas.permissions', ['ideas.firebase'])
 
-.directive('sameOwner', ['Firebase', function(Firebase) {
+.directive('permissions', ['Firebase', '$ionicPopover', function(Firebase, $ionicPopover) {
 	var link = function(scope, element, attrs) {
 		var owner;
 		var auth;
@@ -47,7 +47,27 @@ angular.module('ideas.directives', ['ideas.firebase'])
 			updateData();
 		})
 		Firebase.registerCallback(updated); //Now we listen for changes in the auth
-		scope.sameOwner = false;
+		scope.sameOwner = false; //Add to the scope a manner of listening for if the owner is the same
+		var popover;
+		$ionicPopover.fromTemplateUrl("modules/permissions/options.html", {
+			scope: scope
+		}).then(function(popover) {
+			link.popover = popover;
+		});
+		scope.showOptions = function($event) {
+			console.log("will show popover");
+			link.popover.show($event);
+		};
+		scope.getPermissions = function() {
+			if (scope.sameOwner) {
+				return ['Edit', 'Delete'];
+			} else {
+				return [];
+			}
+		}
+		scope.$on('destroy', function() {
+			scope.popover.remove();
+		})
 	}
 	return {
 		link: link,
