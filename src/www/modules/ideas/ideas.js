@@ -5,7 +5,7 @@
 angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
 
 //This controller handles the ideas view
-.controller('IdeasCtrl', ['$scope', 'Firebase', '$ionicModal', '$ionicPopup', '$state', '$timeout', function($scope, Firebase, $ionicModal, $ionicPopup, $state, $timeout) {
+.controller('IdeasCtrl', ['$scope', 'Firebase', '$ionicModal', '$ionicPopup', '$state', '$timeout', '$ionicPopover', function($scope, Firebase, $ionicModal, $ionicPopup, $state, $timeout, $ionicPopover) {
   $scope.ideas = []; //An array of all the ideas
 
   $scope.search = { //Initialize the variable to store the search text
@@ -20,8 +20,24 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
     });
   };
 
+  $scope.processRemove = function(snapshot) {
+    $timeout(function() {
+      var index = null;
+      for (var i = 0; i < $scope.ideas.length; i++) {
+        if ($scope.ideas[i].name === snapshot.key()) {
+          index = i;
+          break;
+        }
+      }
+      if (index !== null) {
+        $scope.ideas.splice(index, 1);
+      }
+    });
+  }
+
   //This literally  just loads every idea in the firebase (TODO: something smarter)
   $scope.ref.child('ideas').orderByChild('stamp').on("child_added", $scope.processIdea);
+  $scope.ref.child('ideas').on("child_removed", $scope.processRemove);
 
   $scope.goComments = function(idea) {
     $state.go('main.comments', {ideaId: idea.name});
@@ -41,6 +57,37 @@ angular.module('ideas.ideas', ['ideas.firebase', 'ionic'])
   }).then(function(modal) {
     $scope.postModal = modal;
   });
+
+  $scope.popover = {};
+  $ionicPopover.fromTemplateUrl("modules/ideas/options.html", {scope: $scope}).then(function(popover) {
+    $scope.popover = popover;
+  })
+
+  $scope.showOptions = function($event, obj) {
+    $scope.popover.show($event);
+    $scope.obj = obj;
+  }
+
+  $scope.options = [ //These get passed to the permissions directive
+    {name: 'Edit', do: function(popover, obj) {
+      //TODO: edit modal
+    }},
+    {name: 'Delete', do: function(popover, obj) {
+      //Show a confirm popup in the case people accidentally hit delete
+      $ionicPopup.confirm({
+        title: 'Are you sure you want to delete your idea?'
+      }).then(function(resolution) {
+        if (resolution) { //If they confirmed
+          $scope.ref.child('ideas').child(obj.name).remove();
+        } else {
+          //Do nothing because they don't want to logout
+        }
+      }).then(function() {
+        popover.hide();
+      });
+      console.log("delete")
+    }}
+  ];
 
   //Show the post modal
   $scope.showPost = function() {

@@ -4,7 +4,7 @@
 	</ion-header-bar>
 	<ion-content>
 	<div class="list">
-		<div class="item" ng-repeat="option in permissions" ng-click="option.do()">
+		<div class="item" ng-repeat="option in options" ng-click="option.do(popover, obj)">
 			{{option.name}}
 		</div>
 	</div>

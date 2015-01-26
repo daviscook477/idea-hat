@@ -15,29 +15,28 @@
     <div class="button button-block button-balanced" ng-click="showPost()">Post idea</div>
     <div class="list">
       <div class="card list" ng-repeat="idea in ideas" ng-click="goComments(idea)">
-        <permissions owner="{{idea.idea.owner}}" ng-switch="sameOwner">
-          <div ng-switch-when="true">
-            <div class="item item-button-right">
-                {{idea.idea.name}} - {{idea.idea.owner}}
-              <!-- TODO: show usernames instead of login tokens -->
-              <button class="button button-clear" ng-click="showOptions($event);$event.stopPropagation()">
-                <i class="icon ion-ios7-gear"></i>
-              </button>
-            </div>
-            <div class="item">
-              {{idea.idea.description}}
-            </div>
-          </div>
-          <div ng-switch-when="false">
-            <div class="item">
-                {{idea.idea.name}} - {{idea.idea.owner}}
-              <!-- TODO: show usernames instead of login tokens -->
-            </div>
-            <div class="item">
-              {{idea.idea.description}}
-            </div>
-          </div>
+        <permissions owner="{{idea.idea.owner}}">
+          <div ng-switch="sameOwner">
+  <div ng-switch-when="true">
+    <div class="item item-button-right">
+            {{idea.idea.name}} - {{idea.idea.owner}}
+            <!-- TODO: show usernames instead of login tokens -->
+            <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
+              <i class="icon ion-ios7-gear"></i>
+            </button>
+        </div>
+    </div>
+    <div ng-switch-when="false">
+    <div class="item">
+            {{idea.idea.name}} - {{idea.idea.owner}}
+            <!-- TODO: show usernames instead of login tokens -->
+        </div>
+    </div>
+</div>
         </permissions>
+        <div class="item">
+          {{idea.idea.description}}
+        </div>
       </div>
     </div>
   </ion-content>

@@ -13,7 +13,16 @@ function valueOf(string, scope) {
 
 angular.module('ideas.permissions', ['ideas.firebase'])
 
-.directive('permissions', ['Firebase', '$ionicPopover', function(Firebase, $ionicPopover) {
+/*
+ * This directive is awfully confusing so let me explain
+ * It needs options and ref which are just passed as objects so no {{}}
+ * options are the options that will be displayed in a popover if their is permission
+ * ref is the firebase reference
+ * It needs owner and text which are passed with {{}}
+ * owner is the owner of the thing we are checking for permissions on
+ * text is the text to display to the left of this because this is actually a mock list element not just a button
+ */
+.directive('permissions', ['Firebase', function(Firebase) {
 	var link = function(scope, element, attrs) {
 		var owner;
 		var auth;
@@ -45,27 +54,7 @@ angular.module('ideas.permissions', ['ideas.firebase'])
 		attrs.$observe('owner', function(value) {
 			owner = value;
 			updateData();
-		})
-		Firebase.registerCallback(updated); //Now we listen for changes in the auth
-		scope.sameOwner = false; //Add to the scope a manner of listening for if the owner is the same
-		var popover;
-		$ionicPopover.fromTemplateUrl("modules/permissions/options.html", {
-			scope: scope
-		}).then(function(popover) {
-			link.popover = popover;
 		});
-		scope.showOptions = function($event) {
-			console.log("will show popover");
-			link.popover.show($event);
-		};
-		scope.permissions = [{name: 'Edit', do: function() {
-					console.log("edit");
-				}}, {name: 'Delete', do: function() {
-					console.log("delete");
-				}}];
-		scope.$on('destroy', function() {
-			scope.popover.remove();
-		})
 	}
 	return {
 		link: link,
